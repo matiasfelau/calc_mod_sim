@@ -8,12 +8,6 @@ from utiles.enumerations import LogTypes
 
 
 def console_log(log_type, log_message):
-    """
-    Imprime un log en la terminal
-    :param log_type: Elemento de utility.enumeration.LogTypes
-    :param log_message:
-    :return:
-    """
     try:
         color = get_log_color(log_type)
         current_time = get_current_time()
@@ -24,11 +18,6 @@ def console_log(log_type, log_message):
 
 
 def get_log_color(log_type):
-    """
-    Asigna un color al log en base a su tipo
-    :param log_type:
-    :return: Elemento de Fore
-    """
     if log_type == LogTypes.INFO:
         return Fore.GREEN
     elif log_type == LogTypes.WARNING:

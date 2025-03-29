@@ -15,7 +15,7 @@ e = 0.0001 #tolerancia del error
 n = 100 #maximo de iteraciones
 
 def resolver_punto_fijo(funcion_transformada, valor_inicial, tolerancia_error, maximo_iteraciones):
-    console_log(LogTypes.WARNING, 'SE EJECUTARA EL PROCEDIMIENTO DE PUNTO FIJO')
+    console_log(LogTypes.WARNING, 'SE EJECUTARA EL PROCEDIMIENTO DEL METODO DE PUNTO FIJO')
     try:
         funcion_derivada = derivar_funcion(funcion_transformada)
         console_log(LogTypes.VAR, f'g\'(x) = {funcion_derivada}')
