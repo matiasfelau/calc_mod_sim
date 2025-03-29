@@ -7,12 +7,9 @@ from utiles.enumerations import LogTypes
 
 x = sp.Symbol('x')
 
-fx = x**3 - x - 2 #funcion
-
+fx = sp.sympify("x**3 - x - 2") #funcion
 i = [1, 2] #intervalo
-
-e = 0.0001 #tolerancia del error
-
+e = 1e-9 #tolerancia del error
 n = 100 #maximo de iteraciones
 
 def resolver_biseccion(funcion, intervalo, tolerancia_error, maximo_iteraciones):
