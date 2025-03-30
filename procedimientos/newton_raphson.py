@@ -6,7 +6,7 @@ from utiles.exceptions import IterationException, PrintException, CheckException
 
 import sympy as sp
 
-fx = sp.sympify("(x - 1) ** 2") #funcion transformada
+fx = sp.sympify("(x - 1) ** 2") #funcion
 x = 0 #valor inicial
 e = 1e-9 #tolerancia del error
 n = 100 #maximo de iteraciones
