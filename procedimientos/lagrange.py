@@ -1,12 +1,12 @@
-
 import sympy as sp
 
 from herramientas.analisis_matematico import x
 from herramientas.logger import console_log
 from utiles.enumerations import LogTypes
-from utiles.exceptions import CheckException, IterationException, PrintException
+from utiles.exceptions import CheckException, IterationException
 
-c = [[1, 1], [2, 4], [3, 9]] #conjunto de puntos
+c = [[1, 1], [2, 4], [3, 9]]  # conjunto de puntos
+
 
 def ejecutar(conjunto_puntos):
     console_log(LogTypes.WARNING, 'SE EJECUTARA EL PROCEDIMIENTO DEL METODO DE LAGRANGE')
@@ -15,10 +15,11 @@ def ejecutar(conjunto_puntos):
         console_log(LogTypes.VAR, resultado_crudo)
         resultado_final = sp.expand(resultado_crudo)
         print(resultado_final)
-    except (CheckException, IterationException, PrintException):
+    except (CheckException, IterationException):
         pass
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
+
 
 def iterar(conjunto_puntos):
     console_log(LogTypes.STATUS, 'ITERANDO')
@@ -39,6 +40,7 @@ def iterar(conjunto_puntos):
         mensaje = str(e)
         console_log(LogTypes.ERROR, mensaje)
         raise IterationException(mensaje)
+
 
 if __name__ == '__main__':
     console_log(LogTypes.STATUS, 'INICIANDO')
