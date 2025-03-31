@@ -1,6 +1,6 @@
 import sympy as sp
 
-from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error_relativo
+from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error
 from tools.logger import console_log
 from tools.printer import console_print_table
 from procedimientos.punto_fijo import comprobar_contractividad
@@ -36,7 +36,7 @@ def iterar(funcion_transformada, punto_evaluado, tolerancia_error, maximo_iterac
                 resultados.append([iteracion_actual, punto_evaluado, segundo_punto, tercer_punto, resultado_iteracion])
                 punto_evaluado = resultado_iteracion
                 continue
-            error_relativo = calcular_error_relativo(resultado_iteracion, punto_evaluado)
+            error_relativo = calcular_error(resultado_iteracion, punto_evaluado)
             resultados.append(
                 [iteracion_actual, punto_evaluado, segundo_punto, tercer_punto, resultado_iteracion, error_relativo])
             if error_relativo < tolerancia_error or iteracion_actual >= maximo_iteraciones:

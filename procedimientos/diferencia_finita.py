@@ -1,6 +1,6 @@
 import sympy as sp
 
-from tools.analisis_matematico import evaluar_funcion
+from tools.analisis_matematico import evaluar_funcion, derivar_funcion, calcular_error
 from tools.logger import console_log
 from utilities.enumerations import LogTypes
 
@@ -14,8 +14,13 @@ def ejecutar(funcion, punto_evaluado, paso, orden, orientacion):
     try:
         criterio_seleccion_procedimiento = f'{orden} {orientacion}'
         procedimiento = seleccionar_procedimiento(criterio_seleccion_procedimiento)
-        resultado = procedimiento(funcion, punto_evaluado, paso)
-        print(f'LA DERIVADA ES: {resultado}')
+        resultado_procedimiento = procedimiento(funcion, punto_evaluado, paso)
+        print(f'LA DERIVADA ES: {resultado_procedimiento}')
+        funcion_derivada = derivar_funcion(funcion)
+        console_log(LogTypes.VAR, f'f\'(x) = {funcion_derivada}')
+        resultado_absoluto = evaluar_funcion(funcion_derivada, x)
+        error_absoluto = calcular_error(resultado_absoluto, resultado_procedimiento)
+        print(f'EL ERROR ES: {error_absoluto}')
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 

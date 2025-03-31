@@ -17,7 +17,7 @@ def evaluar_funcion(funcion, punto):
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
-def calcular_error_relativo(ultimo_resultado, resultado_anterior):
+def calcular_error(ultimo_resultado, resultado_anterior):
     try:
         return round(abs(ultimo_resultado - resultado_anterior), 9)
     except Exception as e:

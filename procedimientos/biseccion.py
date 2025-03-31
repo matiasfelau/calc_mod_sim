@@ -1,6 +1,6 @@
 import sympy as sp
 
-from tools.analisis_matematico import evaluar_funcion, calcular_error_relativo
+from tools.analisis_matematico import evaluar_funcion, calcular_error
 from tools.logger import console_log
 from tools.printer import console_print_table
 from utilities.enumerations import LogTypes
@@ -55,7 +55,7 @@ def iterar(funcion, tolerancia_error, extremo_negativo, extremo_positivo, maximo
             if iteracion_actual == 0:
                 resultados.append([iteracion_actual, extremo_negativo, extremo_positivo, punto_medio, imagen_punto_medio])
             else:
-                error_relativo = calcular_error_relativo(punto_medio, resultado_anterior)
+                error_relativo = calcular_error(punto_medio, resultado_anterior)
                 resultados.append(
                     [iteracion_actual, extremo_negativo, extremo_positivo, punto_medio, imagen_punto_medio, error_relativo])
                 if error_relativo < tolerancia_error or iteracion_actual >= maximo_iteraciones:
