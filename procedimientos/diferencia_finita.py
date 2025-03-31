@@ -1,12 +1,8 @@
-from unittest import case
-
-from sympy.solvers.diophantine.diophantine import prime_as_sum_of_two_squares
-
-from herramientas.analisis_matematico import evaluar_funcion
-from herramientas.logger import console_log
-from utiles.enumerations import LogTypes
-
 import sympy as sp
+
+from tools.analisis_matematico import evaluar_funcion
+from tools.logger import console_log
+from utilities.enumerations import LogTypes
 
 fx = sp.sympify('sin(x)')
 x = 0
@@ -15,17 +11,15 @@ ord = 'primera'
 orn = 'progresiva'
 
 def ejecutar(funcion, punto_evaluado, paso, orden, orientacion):
-    console_log(LogTypes.WARNING, 'SE EJECUTARA EL PROCEDIMIENTO DEL METODO DE DIFERENCIACION FINITA')
     try:
         criterio_seleccion_procedimiento = f'{orden} {orientacion}'
-        console_log(LogTypes.VAR, criterio_seleccion_procedimiento)
-        procedimiento = seleccionar(criterio_seleccion_procedimiento)
+        procedimiento = seleccionar_procedimiento(criterio_seleccion_procedimiento)
         resultado = procedimiento(funcion, punto_evaluado, paso)
-        print(resultado)
+        print(f'LA DERIVADA ES: {resultado}')
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
-def seleccionar(criterio):
+def seleccionar_procedimiento(criterio):
     match criterio:
         case 'primera progresiva':
             return primer_derivada_progresiva
@@ -43,28 +37,44 @@ def seleccionar(criterio):
             raise Exception('EL CRITERIO NO ES VALIDO')
 
 def primer_derivada_progresiva(funcion, punto_evaluado, paso):
-    return (evaluar_funcion(funcion, punto_evaluado + paso) - evaluar_funcion(funcion, punto_evaluado)) / paso
+    try:
+        return (evaluar_funcion(funcion, punto_evaluado + paso) - evaluar_funcion(funcion, punto_evaluado)) / paso
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 def segunda_derivada_progresiva(funcion, punto_evaluado, paso):
-    return (evaluar_funcion(funcion, punto_evaluado + 2 * paso) - 2 *
-            evaluar_funcion(funcion, punto_evaluado + paso) + evaluar_funcion(funcion, punto_evaluado)) / paso ** 2
+    try:
+        return (evaluar_funcion(funcion, punto_evaluado + 2 * paso) - 2 *
+                evaluar_funcion(funcion, punto_evaluado + paso) + evaluar_funcion(funcion, punto_evaluado)) / paso ** 2
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 def primer_derivada_central(funcion, punto_evaluado, paso):
-    return ((evaluar_funcion(funcion, punto_evaluado + paso) - evaluar_funcion(funcion,punto_evaluado - paso)) /
-            (2 * paso))
+    try:
+        return ((evaluar_funcion(funcion, punto_evaluado + paso) - evaluar_funcion(funcion,punto_evaluado - paso)) /
+                (2 * paso))
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 def segunda_derivada_central(funcion, punto_evaluado, paso):
-    return (evaluar_funcion(funcion, punto_evaluado + paso) - 2 * evaluar_funcion(funcion, punto_evaluado) +
-            evaluar_funcion(funcion, punto_evaluado - paso)) / paso ** 2
+    try:
+        return (evaluar_funcion(funcion, punto_evaluado + paso) - 2 * evaluar_funcion(funcion, punto_evaluado) +
+                evaluar_funcion(funcion, punto_evaluado - paso)) / paso ** 2
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 def primer_derivada_regresiva(funcion, punto_evaluado, paso):
-    return (evaluar_funcion(funcion, punto_evaluado) - evaluar_funcion(funcion, punto_evaluado - paso)) / paso
+    try:
+        return (evaluar_funcion(funcion, punto_evaluado) - evaluar_funcion(funcion, punto_evaluado - paso)) / paso
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 def segunda_derivada_regresiva(funcion, punto_evaluado, paso):
-    return (evaluar_funcion(funcion, punto_evaluado) - 2 * evaluar_funcion(funcion, punto_evaluado - paso) +
-            evaluar_funcion(funcion, punto_evaluado - 2 * paso)) / paso ** 2
+    try:
+        return (evaluar_funcion(funcion, punto_evaluado) - 2 * evaluar_funcion(funcion, punto_evaluado - paso) +
+                evaluar_funcion(funcion, punto_evaluado - 2 * paso)) / paso ** 2
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
 
 if __name__ == '__main__':
-    console_log(LogTypes.STATUS, 'INICIANDO')
     ejecutar(fx, x, h, ord, orn)
-    console_log(LogTypes.STATUS, 'FINALIZANDO')

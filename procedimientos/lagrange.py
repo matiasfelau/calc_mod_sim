@@ -1,28 +1,21 @@
 import sympy as sp
 
-from herramientas.analisis_matematico import x
-from herramientas.logger import console_log
-from utiles.enumerations import LogTypes
-from utiles.exceptions import CheckException, IterationException
+from tools.analisis_matematico import x
+from tools.logger import console_log
+from utilities.enumerations import LogTypes
 
 c = [[1, 1], [2, 4], [3, 9]]  # conjunto de puntos
 
-
 def ejecutar(conjunto_puntos):
-    console_log(LogTypes.WARNING, 'SE EJECUTARA EL PROCEDIMIENTO DEL METODO DE LAGRANGE')
     try:
         resultado_crudo = iterar(conjunto_puntos)
-        console_log(LogTypes.VAR, resultado_crudo)
+        console_log(LogTypes.VAR, f'P(x) = {resultado_crudo}')
         resultado_final = sp.expand(resultado_crudo)
-        print(resultado_final)
-    except (CheckException, IterationException):
-        pass
+        print(f'EL POLINOMIO ES: {resultado_final}')
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
-
 def iterar(conjunto_puntos):
-    console_log(LogTypes.STATUS, 'ITERANDO')
     try:
         resultado = 0
         for punto in conjunto_puntos:
@@ -37,12 +30,7 @@ def iterar(conjunto_puntos):
             resultado += productivo * y_punto
         return resultado
     except Exception as e:
-        mensaje = str(e)
-        console_log(LogTypes.ERROR, mensaje)
-        raise IterationException(mensaje)
-
+        console_log(LogTypes.ERROR, str(e))
 
 if __name__ == '__main__':
-    console_log(LogTypes.STATUS, 'INICIANDO')
     ejecutar(c)
-    console_log(LogTypes.STATUS, 'FINALIZANDO')
