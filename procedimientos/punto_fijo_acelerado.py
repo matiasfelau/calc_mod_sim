@@ -1,5 +1,6 @@
 import sympy as sp
 
+from configuration.parameters import tolerancia, iteraciones
 from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error
 from tools.logger import console_log
 from tools.printer import console_print_table
@@ -8,8 +9,8 @@ from utilities.enumerations import LogTypes
 
 gx = sp.sympify("cos(x)") #funcion transformada
 x0 = 0.5 #punto inicial
-e = 1e-9 #tolerancia del error
-nmax = 100 #maximo de iteraciones
+e = tolerancia #tolerancia del error
+nmax = iteraciones #maximo de iteraciones
 
 def ejecutar(funcion_transformada, punto_inicial, tolerancia_error, maximo_iteraciones):
     try:

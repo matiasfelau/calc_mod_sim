@@ -1,5 +1,6 @@
 import sympy as sp
 
+from configuration.parameters import tolerancia, iteraciones
 from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error
 from tools.logger import console_log
 from tools.printer import console_print_table
@@ -7,8 +8,8 @@ from utilities.enumerations import LogTypes
 
 fx = sp.sympify("(x - 1) ** 2") #funcion
 x = 0 #punto inicial
-e = 1e-9 #tolerancia del error
-nmax = 100 #maximo de iteraciones
+e = tolerancia #tolerancia del error
+nmax = iteraciones #maximo de iteraciones
 
 def ejecutar(funcion, punto_inicial, tolerancia_error, maximo_iteraciones):
     try:
@@ -16,6 +17,7 @@ def ejecutar(funcion, punto_inicial, tolerancia_error, maximo_iteraciones):
         console_log(LogTypes.VAR, f'f\'(x) = {funcion_derivada}')
         resultado = iterar(funcion, funcion_derivada, punto_inicial, tolerancia_error, maximo_iteraciones)
         console_print_table(resultado, ['n', 'xₙ', 'f(xₙ)', 'f\'(xₙ)', 'x⁎', 'e'])
+        return resultado
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
@@ -49,7 +51,7 @@ def iterar(funcion, funcion_derivada, punto_evaluado, tolerancia_error, maximo_i
 
 def calcular(punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada):
     try:
-        return punto_evaluado - imagen_punto_evaluado / imagen_punto_evaluado_derivada
+        return round(float(punto_evaluado - imagen_punto_evaluado / imagen_punto_evaluado_derivada), 9)
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 

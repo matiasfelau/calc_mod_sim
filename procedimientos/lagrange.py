@@ -1,7 +1,5 @@
 import sympy as sp
 
-from procedimientos.biseccion import calcular_punto_medio
-from procedimientos.newton_raphson import calcular
 from tools.analisis_matematico import x, evaluar_funcion, derivar_funcion, calcular_punto_maximo, \
     calcular_raices_intervalo
 from tools.logger import console_log

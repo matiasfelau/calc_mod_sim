@@ -3,6 +3,10 @@ import sympy as sp
 from tools.logger import console_log
 from utilities.enumerations import LogTypes
 
+from configuration.parameters import precision
+
+from sympy import Float
+
 x = sp.Symbol('x')
 
 def derivar_funcion(funcion):
@@ -13,13 +17,13 @@ def derivar_funcion(funcion):
 
 def evaluar_funcion(funcion, punto):
     try:
-        return funcion.subs(x, punto).evalf(9)
+        return funcion.subs(x, punto).evalf(precision)
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
 def calcular_error(ultimo_resultado, resultado_anterior):
     try:
-        return round(abs(ultimo_resultado - resultado_anterior), 9)
+        return round(abs(ultimo_resultado - resultado_anterior), precision)
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
@@ -30,7 +34,7 @@ def calcular_punto_maximo(funcion, intervalo):
         segunda_derivada = derivar_funcion(primer_derivada)
         fue_encontrado = False
         for punto in puntos_criticos:
-            if evaluar_funcion(segunda_derivada, punto) < 0:
+            if evaluar_funcion(segunda_derivada, punto) != 0: #todo factorizar
                 fue_encontrado = True
                 break
         if fue_encontrado:
@@ -45,5 +49,23 @@ def calcular_raices_intervalo(funcion, intervalo):
         inicio_intervalo = intervalo[0]
         final_intervalo = intervalo[1]
         return sp.solveset(funcion, x, domain=sp.Interval(inicio_intervalo, final_intervalo))
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
+
+def calcular_punto_medio(inicio, final):
+    try:
+        return round(((inicio + final) / 2), precision)
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
+
+def es_par(numero):
+    try:
+        return numero % 2 == 0
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
+
+def es_multiplo(numero, factor):
+    try:
+        return numero % factor == 0
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))

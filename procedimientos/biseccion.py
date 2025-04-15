@@ -1,5 +1,6 @@
 import sympy as sp
 
+from configuration.parameters import tolerancia, iteraciones
 from tools.analisis_matematico import evaluar_funcion, calcular_error
 from tools.logger import console_log
 from tools.printer import console_print_table
@@ -9,8 +10,8 @@ x = sp.Symbol('x')
 
 fx = sp.sympify("x**3 - x - 2") #funcion
 i = [1, 2] #intervalo
-e = 1e-9 #tolerancia del error
-nmax = 100 #maximo de iteraciones
+e = tolerancia #tolerancia del error #todo
+nmax = iteraciones #maximo de iteraciones
 
 def ejecutar(funcion, intervalo, tolerancia_error, maximo_iteraciones):
     try:
@@ -26,6 +27,7 @@ def ejecutar(funcion, intervalo, tolerancia_error, maximo_iteraciones):
             else:
                 resultados = iterar(funcion, tolerancia_error, final_intervalo, inicio_intervalo, maximo_iteraciones)
             console_print_table(resultados, ['n', 'x-', 'x+', 'c', 'f(c)', 'e'])
+            return resultados
         else:
             console_log(LogTypes.WARNING, 'LA FUNCION NO CUMPLE CON EL TEOREMA DE BOLSANO')
     except Exception as e:
