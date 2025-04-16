@@ -10,6 +10,15 @@ a = 0
 b = 1
 n = 5
 
+'''
+procedimiento:
+1. calcular el paso
+2. calcular cada xi [xi=a+h*i]
+3. calcular la media para cada xi [m=(xi-1 + xi)/2], la primer iteracion no tiene
+4. calcular cada f(m)
+5. calcular la sumatoria de los f(m)
+6. reemplazar en la formula [dx=h*sum))]
+'''
 def ejecutar(funcion, inicio_intervalo, final_intervalo, subdivisiones):
     try:
         paso = calcular_paso(inicio_intervalo, final_intervalo, subdivisiones)

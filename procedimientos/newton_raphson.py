@@ -11,6 +11,14 @@ x = 0 #punto inicial
 e = tolerancia #tolerancia del error
 nmax = iteraciones #maximo de iteraciones
 
+'''
+procedimiento:
+1. derivar la funcion
+iteracion:
+2. evaluar el punto en la funcion
+3. evaluar el mismo punto en la funcion derivada
+4. reemplazar en la formula [x*=xn-f(n)/f'(n)
+'''
 def ejecutar(funcion, punto_inicial, tolerancia_error, maximo_iteraciones):
     try:
         funcion_derivada = derivar_funcion(funcion)

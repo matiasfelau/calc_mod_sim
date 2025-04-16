@@ -10,9 +10,19 @@ x = sp.Symbol('x')
 
 fx = sp.sympify("x**3 - x - 2") #funcion
 i = [1, 2] #intervalo
-e = tolerancia #tolerancia del error #todo
+e = tolerancia #tolerancia del error
 nmax = iteraciones #maximo de iteraciones
 
+'''
+procedimiento:
+1. evaluar cada extremo del intervalo en la funcion
+2. verificar que cumple el teorema de bolsano (ambos extremos tienen imagenes opuestas)
+3. calcular el punto medio del intervalo [m=(a+b)/2]
+4. evaluar el punto medio en la funcion
+iteracion:
+5. reemplazar el punto medio en el extremo con mismo signo en sus imagenes
+6. calcular el punto medio del nuevo intervalo
+'''
 def ejecutar(funcion, intervalo, tolerancia_error, maximo_iteraciones):
     try:
         inicio_intervalo = intervalo[0]

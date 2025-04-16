@@ -11,6 +11,14 @@ x0 = 1 #punto inicial
 e = tolerancia #tolerancia del error
 nmax = iteraciones #maximo de iteraciones
 
+'''
+procedimiento:
+1. despejar la funcion para encontrar una funcion auxiliar g(x)
+2. verificar que la funcion converge [abs(g'(x)) < 1]
+3. evaluar el punto inicial en la funcion
+iteracion: 
+4. evaluar cada resultado anterior en la funcion
+'''
 def ejecutar(funcion_transformada, punto_inicial, tolerancia_error, maximo_iteraciones):
     try:
         funcion_derivada = derivar_funcion(funcion_transformada)

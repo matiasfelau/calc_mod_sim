@@ -28,17 +28,21 @@ def calcular_error(ultimo_resultado, resultado_anterior):
         console_log(LogTypes.ERROR, str(e))
 
 def calcular_punto_maximo(funcion, intervalo):
-    try:
+    try: #todo factorizar
         primer_derivada = derivar_funcion(funcion)
         puntos_criticos = calcular_raices_intervalo(primer_derivada, intervalo)
         segunda_derivada = derivar_funcion(primer_derivada)
         fue_encontrado = False
+        mayor = evaluar_funcion(funcion, puntos_criticos[0])
+        resultado = 0
         for punto in puntos_criticos:
             if evaluar_funcion(segunda_derivada, punto) != 0: #todo factorizar
-                fue_encontrado = True
-                break
+                if mayor < evaluar_funcion(funcion, punto):
+                    mayor = evaluar_funcion(funcion, punto)
+                    resultado = punto
+                    fue_encontrado = True
         if fue_encontrado:
-            return punto
+            return resultado
         else:
             print('No se encontro')
     except Exception as e:

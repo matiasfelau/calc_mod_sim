@@ -8,7 +8,12 @@ from utilities.enumerations import LogTypes
 c = [[0, 0], [sp.pi/2, sp.sin(sp.pi/2)], [sp.pi, sp.sin(sp.pi)]]  # conjunto de puntos
 fx = sp.sympify('sin(x)') #funcion
 p = sp.pi/3
-
+'''
+procedimiento:
+por cada punto xn calcular el productivo [li=(x-xi)/(xn-xi) * li], donde xi es cada punto distinto a xn
+y multiplicar cada productivo por f(xn)
+sumar todo
+'''
 def ejecutar(conjunto_puntos, funcion, punto_evaluado_error):
     try:
         resultado_crudo = iterar(conjunto_puntos)
@@ -45,13 +50,25 @@ def calcular_error_local(funcion, polinomio, punto):
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
+'''
+procedimiento:
+1. derivar la funcion inicial tantas veces como cantidad de nodos tengamos [d(x)]
+2. calcular maximos y minimos de la funcion inicial
+3. evaluar  en la derivada el punto con imagen mas grande de los maximos y minimos [e]
+4. reemplazar el resultado del paso 3 [e] en [emax=abs(e/n!)] donde n es la cantidad de nodos
+5. calcular el productivo [li=(x-xi) * li] reemplazando en xi cada punto del conjunto inicial
+6. derivar el productivo
+7. buscar raices en la derivada del productivo
+8. evaluar la ultima raiz obtenida en la funcion productiva SIN derivar
+9. multiplicar el resultado del paso 8 por emax
+'''
 def calcular_error_global(funcion, conjunto_puntos):
     try:
         cantidad_nodos = len(conjunto_puntos)
         derivada_funcion = funcion
         for i in range(cantidad_nodos):
             derivada_funcion = derivar_funcion(derivada_funcion)
-        termino_error = funcion / sp.factorial(cantidad_nodos)
+        termino_error = derivada_funcion / sp.factorial(cantidad_nodos)
         punto_inicial = conjunto_puntos[0]
         coordenada_x_punto_inicial = punto_inicial[0]
         punto_final = conjunto_puntos[-1]

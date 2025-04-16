@@ -12,6 +12,16 @@ x0 = 0.5 #punto inicial
 e = tolerancia #tolerancia del error
 nmax = iteraciones #maximo de iteraciones
 
+'''
+procedimiento:
+1. despejar la funcion para encontrar una funcion auxiliar g(x)
+2. verificar que la funcion converge [abs(g'(x)) < 1]
+iteracion:
+3. evaluar el punto inicial en la funcion
+4. evaluar el siguiente punto en la funcion [xn+1]
+5. evaluar el siguiente punto en la funcion [xn+2]
+6. reemplazar en la formula [x*=xn-((xn+1-xn)^2)/(xn+2-2*xn+1-xn]
+'''
 def ejecutar(funcion_transformada, punto_inicial, tolerancia_error, maximo_iteraciones):
     try:
         funcion_derivada = derivar_funcion(funcion_transformada)
