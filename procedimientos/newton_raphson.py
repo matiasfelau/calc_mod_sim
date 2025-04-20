@@ -1,15 +1,15 @@
 import sympy as sp
 
-from configuration.parameters import tolerancia, iteraciones
-from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error
+from tools.plotter import plot_procedure_trajectory
+from utilities import vault as v
+from configuration import parameters as p
+from tools.analisis_matematico import derivar_funcion, evaluar_funcion, calcular_error_relativo
 from tools.logger import console_log
-from tools.printer import console_print_table
+from tools.printer import print_procedure_result_table
 from utilities.enumerations import LogTypes
 
 fx = sp.sympify("(x - 1) ** 2") #funcion
 x = 0 #punto inicial
-e = tolerancia #tolerancia del error
-nmax = iteraciones #maximo de iteraciones
 
 '''
 procedimiento:
@@ -19,17 +19,19 @@ iteracion:
 3. evaluar el mismo punto en la funcion derivada
 4. reemplazar en la formula [x*=xn-f(n)/f'(n)
 '''
-def ejecutar(funcion, punto_inicial, tolerancia_error, maximo_iteraciones):
+def ejecutar(funcion, punto_inicial):
     try:
+        v.trayectoria_procedimiento += rf'$f(x)={sp.latex(funcion)}, x_0={punto_inicial}$' + '\n'
         funcion_derivada = derivar_funcion(funcion)
-        console_log(LogTypes.VAR, f'f\'(x) = {funcion_derivada}')
-        resultado = iterar(funcion, funcion_derivada, punto_inicial, tolerancia_error, maximo_iteraciones)
-        console_print_table(resultado, ['n', 'xₙ', 'f(xₙ)', 'f\'(xₙ)', 'x⁎', 'e'])
+        v.trayectoria_procedimiento += rf'$f\'(x) = {sp.latex(funcion_derivada)}$' + '\n'
+        resultado = iterar(funcion, funcion_derivada, punto_inicial)
+        plot_procedure_trajectory('NEWTON RAPHSON', v.trayectoria_procedimiento)
+        print_procedure_result_table(resultado, ['n', 'xₙ', 'f(xₙ)', 'f\'(xₙ)', 'x⁎', 'e'])
         return resultado
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
-def iterar(funcion, funcion_derivada, punto_evaluado, tolerancia_error, maximo_iteraciones):
+def iterar(funcion, funcion_derivada, punto_evaluado):
     try:
         iteracion_actual = -1
         resultados = []
@@ -37,18 +39,31 @@ def iterar(funcion, funcion_derivada, punto_evaluado, tolerancia_error, maximo_i
             iteracion_actual += 1
             imagen_punto_evaluado = evaluar_funcion(funcion, punto_evaluado)
             imagen_punto_evaluado_derivada = evaluar_funcion(funcion_derivada, punto_evaluado)
-            resultado_iteracion = calcular(punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada)
+            try:
+                resultado_iteracion = calcular(punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada)
+            except ZeroDivisionError:
+                v.trayectoria_procedimiento += rf'$x^*={punto_evaluado}, n={iteracion_actual - 1}' + '\n'
+                console_log(LogTypes.WARNING, f'DIVISION POR CERO A PARTIR DE ITERACION {iteracion_actual - 1}')
+                break
             if iteracion_actual == 0:
-                resultados.append(
-                    [iteracion_actual, punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada,
-                     resultado_iteracion])
+                resultados.append([
+                    iteracion_actual,
+                    punto_evaluado,
+                    imagen_punto_evaluado,
+                    imagen_punto_evaluado_derivada,
+                    resultado_iteracion])
                 punto_evaluado = resultado_iteracion
                 continue
-            error_relativo = calcular_error(resultado_iteracion, punto_evaluado)
-            resultados.append(
-                [iteracion_actual, punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada,
-                 resultado_iteracion, error_relativo])
-            if error_relativo < tolerancia_error or iteracion_actual >= maximo_iteraciones:
+            error_relativo = calcular_error_relativo(resultado_iteracion, punto_evaluado)
+            resultados.append([
+                iteracion_actual,
+                punto_evaluado,
+                imagen_punto_evaluado,
+                imagen_punto_evaluado_derivada,
+                resultado_iteracion,
+                error_relativo])
+            if error_relativo < p.tolerancia_error or iteracion_actual >= p.maximo_iteraciones:
+                v.trayectoria_procedimiento += rf'$x^*={f'{resultado_iteracion:.{p.precision_decimales}f}'},n={iteracion_actual}$' + '\n'
                 break
             else:
                 punto_evaluado = resultado_iteracion
@@ -58,10 +73,10 @@ def iterar(funcion, funcion_derivada, punto_evaluado, tolerancia_error, maximo_i
         console_log(LogTypes.ERROR, str(e))
 
 def calcular(punto_evaluado, imagen_punto_evaluado, imagen_punto_evaluado_derivada):
-    try:
-        return round(float(punto_evaluado - imagen_punto_evaluado / imagen_punto_evaluado_derivada), 9)
-    except Exception as e:
-        console_log(LogTypes.ERROR, str(e))
+    if imagen_punto_evaluado_derivada != 0:
+        return punto_evaluado - imagen_punto_evaluado / imagen_punto_evaluado_derivada
+    else:
+        raise ZeroDivisionError
 
 if __name__ == '__main__':
-    ejecutar(fx, x, e, nmax)
+    ejecutar(fx, x)

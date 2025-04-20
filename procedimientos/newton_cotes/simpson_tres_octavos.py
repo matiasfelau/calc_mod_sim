@@ -1,13 +1,15 @@
 import sympy as sp
 
-from tools.analisis_matematico import es_multiplo, evaluar_funcion, es_par, derivar_funcion, calcular_punto_maximo
+from tools.analisis_matematico import es_multiplo, evaluar_funcion, es_par, derivar_funcion, calcular_epsilon, \
+    calcular_raices
 from tools.logger import console_log
-from tools.printer import console_print_table
+from tools.printer import print_procedure_result_table
 from utilities.enumerations import LogTypes
+from configuration import parameters as p
 
-fx = 'x'
+fx = sp.sympify('6+3*cos(x)')
 a = 0
-b = 1
+b = sp.pi/2
 n = 6
 
 '''
@@ -25,17 +27,17 @@ si es compuesta:
 '''
 def ejecutar_metodo(funcion, inicio_intervalo, final_intervalo, subdivisiones):
     try:
-        if subdivisiones == 4:
+        if subdivisiones == 3:
             resultado = calcular_simple(funcion, inicio_intervalo, final_intervalo, subdivisiones)
             error_truncamiento = calcular_error_truncamiento_simple(funcion, inicio_intervalo, final_intervalo)
-        elif subdivisiones > 4 and es_multiplo(subdivisiones, 3):
+        elif subdivisiones > 3 and es_multiplo(subdivisiones, 3):
             tabla, resultado = calcular_compuesta(funcion, inicio_intervalo, final_intervalo, subdivisiones)
             error_truncamiento = calcular_error_truncamiento_compuesta(funcion, inicio_intervalo, final_intervalo)
-            console_print_table(tabla, ['i', 'xi', 'f(xi)'])
+            print_procedure_result_table(tabla, ['i', 'xi', 'f(xi)'])
         else:
             raise Exception('NUMERO DE SUBDIVISIONES INVALIDO')
-        print(f'x* = {resultado}')
-        print(f'et = {error_truncamiento}')
+        print(f'x* = {round(resultado, p.precision_decimales)}')
+        print(f'et = {round(error_truncamiento, p.precision_decimales)}')
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
@@ -61,11 +63,11 @@ def calcular_compuesta(funcion, inicio_intervalo, final_intervalo, subdivisiones
         sumatoria_multiplos_tres = 0
         sumatoria_impares = 0
         sumatoria_pares = 0
-        for iteracion in range(subdivisiones):
+        for iteracion in range(subdivisiones + 1):
             punto_evaluado = inicio_intervalo + iteracion * paso
             imagen_punto_evaluado = evaluar_funcion(funcion, punto_evaluado)
             tabla.append([iteracion, punto_evaluado, imagen_punto_evaluado])
-            if not (iteracion == 0 or iteracion == subdivisiones - 1):
+            if not (iteracion == 0 or iteracion == subdivisiones):
                 if es_multiplo(iteracion, 3):
                     sumatoria_multiplos_tres += imagen_punto_evaluado
                 elif not es_par(iteracion):
@@ -82,21 +84,23 @@ def calcular_compuesta(funcion, inicio_intervalo, final_intervalo, subdivisiones
 def calcular_error_truncamiento_simple(funcion, inicio_intervalo, final_intervalo):
     try:
         paso = (final_intervalo - inicio_intervalo) / 3 #todo factorizar
-        punto_maximo = calcular_punto_maximo(funcion, [inicio_intervalo, final_intervalo])
-        for i in range(4):
-            funcion = derivar_funcion(funcion)
-        epsilon = evaluar_funcion(funcion, punto_maximo)
-        return - (3 / 80) * paso ** 5 * epsilon
+        funcion_derivada = derivar_funcion(funcion, 4)
+        derivada_derivada = derivar_funcion(funcion_derivada)
+        puntos_criticos = calcular_raices(derivada_derivada, inicio_intervalo, final_intervalo)
+        epsilon = calcular_epsilon(funcion_derivada, puntos_criticos)
+        punto_maximo = evaluar_funcion(funcion_derivada, epsilon)
+        return - (3 / 80) * paso ** 5 * punto_maximo
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
 def calcular_error_truncamiento_compuesta(funcion, inicio_intervalo, final_intervalo):
     try:
-        punto_maximo = calcular_punto_maximo(funcion, [inicio_intervalo, final_intervalo])
-        for i in range(4):
-            funcion = derivar_funcion(funcion)
-        epsilon = evaluar_funcion(funcion, punto_maximo)
-        return - (((final_intervalo - inicio_intervalo) ** 5) / 6480) * epsilon
+        funcion_derivada = derivar_funcion(funcion, 4)
+        derivada_derivada = derivar_funcion(funcion_derivada)
+        puntos_criticos = calcular_raices(derivada_derivada, inicio_intervalo, final_intervalo)
+        epsilon = calcular_epsilon(funcion_derivada, puntos_criticos)
+        punto_maximo = evaluar_funcion(funcion_derivada, epsilon)
+        return - (((final_intervalo - inicio_intervalo) ** 5) / 6480) * punto_maximo
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 

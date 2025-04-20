@@ -2,8 +2,9 @@ import sympy as sp
 
 from tools.analisis_matematico import evaluar_funcion, calcular_punto_medio
 from tools.logger import console_log
-from tools.printer import console_print_table
+from tools.printer import print_procedure_result_table
 from utilities.enumerations import LogTypes
+from configuration import parameters as p
 
 fx = sp.simplify('E^(x^2)')
 a = 0
@@ -23,8 +24,8 @@ def ejecutar(funcion, inicio_intervalo, final_intervalo, subdivisiones):
     try:
         paso = calcular_paso(inicio_intervalo, final_intervalo, subdivisiones)
         tabla, resultado = iterar(funcion, subdivisiones, inicio_intervalo, paso)
-        console_print_table(tabla, ['i', 'xi', 'm', 'f(m)'])
-        print(resultado)
+        print_procedure_result_table(tabla, ['i', 'xi', 'm', 'f(m)'])
+        print(round(resultado, p.precision_decimales))
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
