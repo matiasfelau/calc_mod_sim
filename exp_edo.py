@@ -18,3 +18,5 @@ ode = Eq(f(x).diff(x), x * f(x))
 sol = dsolve(ode, f(x), ics={f(1): 1})
 
 print(sol)
+
+print('hola')
