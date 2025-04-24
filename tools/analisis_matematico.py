@@ -1,9 +1,11 @@
 import sympy as sp
+from sympy import Function
 
 from tools.logger import console_log
 from utilities.enumerations import LogTypes
 
 x = sp.Symbol('x')
+f = Function('f')
 
 
 def derivar_funcion(funcion, orden=1):
@@ -68,5 +70,19 @@ def es_par(numero):
 def es_multiplo(numero, factor):
     try:
         return numero % factor == 0
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
+
+
+def calcular_integral_definida(funcion, inicio_intervalo, final_intervalo):
+    try:
+        return sp.integrate(funcion, (inicio_intervalo, final_intervalo))
+    except Exception as e:
+        console_log(LogTypes.ERROR, str(e))
+
+
+def evaluar_funcion_dos_variables(funcion, primer_variable, segunda_variable):
+    try:
+        return funcion.subs(funcion, {x: primer_variable, y: segunda_variable}).evalf()
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
