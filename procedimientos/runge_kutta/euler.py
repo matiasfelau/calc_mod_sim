@@ -1,3 +1,5 @@
+import math
+
 import sympy as sp
 
 from tools.analisis_matematico import evaluar_funcion, evaluar_funcion_dos_variables
@@ -8,11 +10,11 @@ from configuration import parameters as p
 from utilities.enumerations import LogTypes
 import sympy as sp
 
-fx = sp.sympify('fx')
-y0 = 0
+fx = sp.sympify('x*y')
+y0 = 1
 inicio = 0
-final = 1
-h = 0.1
+final = 2
+h = 0.5
 
 
 def ejecutar_procedimiento_euler(funcion, y_inicial, inicio_intervalo, final_intervalo, paso):
@@ -26,7 +28,7 @@ def ejecutar_procedimiento_euler(funcion, y_inicial, inicio_intervalo, final_int
     try:
         y_siguiente = y_inicial
         resultado = []
-        for i in range((final_intervalo - inicio_intervalo) / paso):
+        for i in range(math.ceil((final_intervalo - inicio_intervalo) / paso)+1):
             x_actual = inicio_intervalo + i * paso
             y_actual = y_siguiente
             resultado.append([i, x_actual, y_actual])

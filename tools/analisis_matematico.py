@@ -25,6 +25,7 @@ def derivar_funcion(funcion, orden=1):
     derivada de arcsin = 1/sqrt(1-x^(2))
     derivada de arccos = -1/sqrt(1-x^(2))
     derivada de arctan = 1/1+x^(2)
+    derivada de e^(mkx) = mke^(mkx)
     """
     try:
         return sp.diff(funcion, (x, orden))
@@ -103,6 +104,7 @@ def calcular_integral_definida(funcion, inicio_intervalo, final_intervalo):
     integral de senx = -cosx
     integral de cosx = senx
     integral de 1/cos^(2)x = tgx
+    integral de e^(mkx) = me^(mkx)/k
     """
     try:
         return sp.integrate(funcion, (inicio_intervalo, final_intervalo))
@@ -112,6 +114,6 @@ def calcular_integral_definida(funcion, inicio_intervalo, final_intervalo):
 
 def evaluar_funcion_dos_variables(funcion, primer_variable, segunda_variable):
     try:
-        return funcion.subs(funcion, {x: primer_variable, y: segunda_variable}).evalf()
+        return funcion.subs({x: primer_variable, y: segunda_variable}).evalf()
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))

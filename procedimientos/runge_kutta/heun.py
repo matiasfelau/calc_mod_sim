@@ -1,3 +1,5 @@
+import math
+
 from procedimientos.runge_kutta.euler import ejecutar_procedimiento_euler
 from tools.analisis_matematico import evaluar_funcion_dos_variables
 from tools.logger import console_log
@@ -5,7 +7,7 @@ from tools.printer import print_procedure_result_table
 from utilities.enumerations import LogTypes
 import sympy as sp
 
-fx = sp.sympify('fx')
+fx = sp.sympify('x+y')
 y0 = 0
 inicio = 0
 final = 1
@@ -20,7 +22,7 @@ def ejecutar_procedimiento_heun(funcion, y_inicial, inicio_intervalo, final_inte
     try:
         y_siguiente = y_inicial
         resultado = []
-        for i in range((final_intervalo - inicio_intervalo) / paso):
+        for i in range(math.ceil((final_intervalo - inicio_intervalo) / paso)+1):
             x_actual = inicio_intervalo + i * paso
             y_actual = y_siguiente
             resultado.append([i, x_actual, y_actual])
