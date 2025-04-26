@@ -12,6 +12,10 @@ fx = sp.sympify("(x - 1) ** 2") #funcion
 x = 0 #punto inicial
 
 '''
+para graficar:
+vector(punto_inicial, (xn+1, 0))
+segmento((xn+1, 0), (xn+1, f(xn+1)))
+iterar
 procedimiento:
 1. derivar la funcion
 iteracion:

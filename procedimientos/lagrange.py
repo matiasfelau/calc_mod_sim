@@ -1,5 +1,4 @@
 import sympy as sp
-from sympy import N, lambdify
 
 from configuration import parameters as p
 from tools.analisis_matematico import x, evaluar_funcion, derivar_funcion, calcular_epsilon, \
@@ -7,14 +6,14 @@ from tools.analisis_matematico import x, evaluar_funcion, derivar_funcion, calcu
 from tools.logger import console_log
 from tools.plotter import plot_procedure_trajectory
 from tools.printer import print_procedure_result_table
-from utilities.enumerations import LogTypes
 from utilities import vault as v
+from utilities.enumerations import LogTypes
 
 n = sp.Symbol('n')
 
 c = [[0, 0], [sp.pi/2, 1], [sp.pi, 0]]  # conjunto de puntos
 fx = sp.sympify('sin(x)')  #funcion #SIN
-p = sp.pi/3
+punto_error_local = sp.pi / 3
 
 
 '''
@@ -23,7 +22,6 @@ por cada punto xn calcular el productivo [li=(x-xi)/(xn-xi) * li], donde xi es c
 y multiplicar cada productivo por f(xn)
 sumar todo
 '''
-
 
 def ejecutar(conjunto_puntos, funcion, punto_evaluado_error):
     try:
@@ -142,4 +140,4 @@ def calcular_error_global(funcion, conjunto_puntos):
 
 
 if __name__ == '__main__':
-    ejecutar(c, fx, p)
+    ejecutar(c, fx, punto_error_local)

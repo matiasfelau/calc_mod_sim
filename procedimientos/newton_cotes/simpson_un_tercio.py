@@ -14,6 +14,7 @@ n = 4
 
 '''
 procedimiento:
+n son subdivisiones
 1. diferenciar si la formula a usar sera simple (n=3) o compuesta (n>3)
 si es simple:
 2. calcular el paso [h=(b-a)/2]
