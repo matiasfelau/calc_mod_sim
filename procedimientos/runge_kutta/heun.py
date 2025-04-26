@@ -1,10 +1,7 @@
-import sympy as sp
-
-from tools.analisis_matematico import evaluar_funcion, evaluar_funcion_dos_variables
+from procedimientos.runge_kutta.euler import ejecutar_procedimiento_euler
+from tools.analisis_matematico import evaluar_funcion_dos_variables
 from tools.logger import console_log
 from tools.printer import print_procedure_result_table
-from utilities import vault as v
-from configuration import parameters as p
 from utilities.enumerations import LogTypes
 import sympy as sp
 
@@ -15,13 +12,10 @@ final = 1
 h = 0.1
 
 
-def ejecutar_procedimiento_euler(funcion, y_inicial, inicio_intervalo, final_intervalo, paso):
+def ejecutar_procedimiento_heun(funcion, y_inicial, inicio_intervalo, final_intervalo, paso):
     """
     procedimiento:
-    1. definir las condiciones iniciales (iteración 0, punto inicial, etc)
-    iteracion:
-    2. evaluar la funcion en xn, yn [f(xn, yn)]
-    3. reemplazar en la formula [yn+1 = yn + h * f(xn, yn)]
+
     """
     try:
         y_siguiente = y_inicial
@@ -31,10 +25,14 @@ def ejecutar_procedimiento_euler(funcion, y_inicial, inicio_intervalo, final_int
             y_actual = y_siguiente
             resultado.append([i, x_actual, y_actual])
             pendiente = evaluar_funcion_dos_variables(funcion, x_actual, y_actual)
-            y_siguiente = y_actual + paso * pendiente
+            x_siguiente = x_actual + paso
+            pendiente_predicha = evaluar_funcion_dos_variables(funcion, x_actual, y_actual)
+            y_predicha = y_actual + paso * pendiente_predicha
+            predictivo = evaluar_funcion_dos_variables(funcion, x_siguiente, y_predicha)
+            y_siguiente = y_actual + (paso / 2) * (pendiente + predictivo)
         print_procedure_result_table(resultado, ['n', 'xn', 'yn'])
     except Exception as e:
         console_log(LogTypes.ERROR, str(e))
 
 if __name__ == '__main__':
-    ejecutar_procedimiento_euler(fx, y0, inicio, final, h)
+    ejecutar_procedimiento_heun(fx, y0, inicio, final, h)

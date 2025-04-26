@@ -6,9 +6,26 @@ from utilities.enumerations import LogTypes
 
 x = sp.Symbol('x')
 f = Function('f')
+y = sp.Symbol('y')
 
 
 def derivar_funcion(funcion, orden=1):
+    """
+    derivada de k = 0
+    derivada de x = 1
+    derivada de x^(n) = nx^(n-1)
+    derivada de 1/x = -1/x^(2)
+    derivada de sqrt(x) = 1/2sqrt(x)
+    derivada de senx = cosx
+    derivada de cosx = -sinx
+    derivada de tgx = 1/cos^(2)x
+    derivada de lnx = 1/x
+    derivada de e^(x) = e^(x)
+    derivada de a^(x) = a^(x) lna
+    derivada de arcsin = 1/sqrt(1-x^(2))
+    derivada de arccos = -1/sqrt(1-x^(2))
+    derivada de arctan = 1/1+x^(2)
+    """
     try:
         return sp.diff(funcion, (x, orden))
     except Exception as e:
@@ -75,6 +92,18 @@ def es_multiplo(numero, factor):
 
 
 def calcular_integral_definida(funcion, inicio_intervalo, final_intervalo):
+    """
+    una vaca sin cola vestida de uniforme
+    liate para u
+    integral de k = kx
+    integral de x = x^(n+1)/n+1
+    integral de 1/x = lnx
+    integral de e^(x) = e^(x)
+    integral de a^(x) = a^(x)/lna
+    integral de senx = -cosx
+    integral de cosx = senx
+    integral de 1/cos^(2)x = tgx
+    """
     try:
         return sp.integrate(funcion, (inicio_intervalo, final_intervalo))
     except Exception as e:
