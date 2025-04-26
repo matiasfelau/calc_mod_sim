@@ -96,6 +96,7 @@ def calcular_integral_definida(funcion, inicio_intervalo, final_intervalo):
     """
     una vaca sin cola vestida de uniforme
     liate para u
+    integral de gx . g'x => u=gx, du=g'x dx
     integral de k = kx
     integral de x = x^(n+1)/n+1
     integral de 1/x = lnx
