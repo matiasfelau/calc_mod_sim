@@ -14,6 +14,9 @@ x0 = 1  #punto inicial #0.5
 aitken = False
 
 '''
+para transformar:
+si es una elemental como cosx sumarle x
+si es un polinomio despejar x, si no se contrae separar por ej x^2= x*x y despejar
 procedimiento:
 1. despejar la funcion para encontrar una funcion auxiliar g(x)
 2. verificar que la funcion converge [abs(g'(x)) < 1]
