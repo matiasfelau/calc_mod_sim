@@ -47,9 +47,7 @@ print("=========================================================================
 
 # Mostrar resultados mejorados
 print(f"\nEstimación por Monte Carlo: {integral}")
-print(f"\media muestral: {media}")
-print(f"Valor exacto de la integral: {integral_exacta}")
-print(f"Error absoluto: {abs(integral - integral_exacta)}")
+print(f"media muestral: {media}")
 print(f"Desviación estándar: {desv_estandar}")
 print(f"Error estándar: {error_estandar}")
 print(f"Varianza: {varianza}")
